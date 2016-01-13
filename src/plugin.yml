@@ -1,0 +1,15 @@
+name: Geld
+version: 3.3.5
+author: leNic
+depends: [CityCore, Vault]
+load: STARTUP
+
+main: bz.dcr.geld.Geld
+
+commands:
+  money:
+    usage: /<command>
+    description: Kontrolliere deinen Kontostand
+  pin:
+    usage: /<command>
+    description: Kaufe PINs oder löse sie ein
