@@ -1,8 +1,8 @@
 package bz.dcr.geld.data;
 
 import bz.dcr.geld.api.Transaction;
-import bz.dcr.geld.pin.results.PinValidationResult;
 import bz.dcr.geld.pin.RedeemablePin;
+import bz.dcr.geld.pin.results.PinValidationResult;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 

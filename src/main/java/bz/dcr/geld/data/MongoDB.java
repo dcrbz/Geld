@@ -1,8 +1,8 @@
 package bz.dcr.geld.data;
 
 import bz.dcr.geld.api.Transaction;
-import bz.dcr.geld.pin.results.PinValidationResult;
 import bz.dcr.geld.pin.RedeemablePin;
+import bz.dcr.geld.pin.results.PinValidationResult;
 import com.mongodb.*;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -103,7 +103,7 @@ public class MongoDB extends Database {
 
     @Override
     public void setAcceptTransfers(UUID player, boolean status) {
-        this.playerCollection.update("{uniqueId: #", player).with("{$set {acceptTransfer: #}}", status);
+        this.playerCollection.update("{uniqueId: #}", player).with("{$set {acceptTransfer: #}}", status);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class MongoDB extends Database {
 
     @Override
     public boolean hasPlayer(UUID uuid) {
-        return this.playerCollection.count("{uniqueId: #", uuid) > 0;
+        return this.playerCollection.count("{uniqueId: #}", uuid) > 0;
     }
 
     @Override

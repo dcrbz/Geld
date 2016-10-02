@@ -1,5 +1,5 @@
 name: Geld
-version: 3.3.5
+version: ${project.version}
 author: leNic
 depends: [CityCore, Vault]
 load: STARTUP
