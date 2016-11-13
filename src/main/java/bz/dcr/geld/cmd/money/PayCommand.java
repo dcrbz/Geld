@@ -74,7 +74,12 @@ public class PayCommand implements IGeldCommand {
                 return;
             }
 
-            final double tax = plugin.getConfig().getBoolean("Transaction-Tax.Enabled") ? value / 100 * plugin.getConfig().getInt("Transaction-Tax.Percent") : 0.0D;
+            double tax = plugin.getConfig().getBoolean("Transaction-Tax.Enabled") ? value / 100 * plugin.getConfig().getInt("Transaction-Tax.Percent") : 0.0D;
+
+            // Sender has permission to do transactions without taxes
+            if(sender.hasPermission("money.notax"))
+                tax = 0.0D;
+
             final double balance = this.plugin.getEconomy().getPlayerData(sender.getUniqueId()).get().getBalance();
 
             // Sender has not enough money
