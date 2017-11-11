@@ -1,7 +1,7 @@
 name: Geld
 version: ${project.version}
 author: leNic
-depends: [CityCore, Vault]
+depends: [dcCore, Vault]
 load: STARTUP
 
 main: bz.dcr.geld.Geld

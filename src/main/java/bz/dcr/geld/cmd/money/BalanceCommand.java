@@ -1,6 +1,5 @@
 package bz.dcr.geld.cmd.money;
 
-import bz.dcr.citycore.CityCore;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.cmd.IGeldCommand;
 import bz.dcr.geld.data.PlayerData;
@@ -33,7 +32,7 @@ public class BalanceCommand implements IGeldCommand {
                 return;
             }
 
-            final Optional<UUID> target = CityCore.getAPI().getUUID(args[1]);
+            final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
             // Player does not exist
             if(!target.isPresent()){

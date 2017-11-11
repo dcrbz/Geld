@@ -1,0 +1,15 @@
+stages:
+  - build
+
+maven-build:
+  image: maven:3-jdk-8
+  stage: build
+  tags:
+    - maven
+  script:
+    - mvn install -B
+    - mvn package
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
+    paths:
+      - ./target/*.jar

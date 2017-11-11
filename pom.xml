@@ -6,11 +6,11 @@
 
     <groupId>bz.dcr.geld</groupId>
     <artifactId>Geld</artifactId>
-    <version>3.3.7</version>
+    <version>3.4.0</version>
 
     <properties>
         <javaVersion>1.8</javaVersion>
-        <spigotVersion>1.10.2-R0.1-SNAPSHOT</spigotVersion>
+        <spigotVersion>1.12.2-R0.1-SNAPSHOT</spigotVersion>
     </properties>
 
     <repositories>

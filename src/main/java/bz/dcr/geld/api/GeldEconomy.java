@@ -1,6 +1,5 @@
 package bz.dcr.geld.api;
 
-import bz.dcr.citycore.CityCore;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.data.MoneyManager;
 import bz.dcr.geld.data.PlayerData;
@@ -60,7 +59,7 @@ public class GeldEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String name) {
-        final Optional<UUID> target = CityCore.getAPI().getUUID(name);
+        final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
         return target.isPresent() && this.plugin.getDB().hasPlayer(target.get());
     }
@@ -82,7 +81,7 @@ public class GeldEconomy implements Economy {
 
     @Override
     public double getBalance(String name) {
-        final Optional<UUID> target = CityCore.getAPI().getUUID(name);
+        final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
         if(!target.isPresent())
             return 0.0D;
@@ -137,7 +136,7 @@ public class GeldEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String name, double value) {
-        final Optional<UUID> target = CityCore.getAPI().getUUID(name);
+        final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
         if(!target.isPresent())
             return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
@@ -186,7 +185,7 @@ public class GeldEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String name, double value) {
-        final Optional<UUID> target = CityCore.getAPI().getUUID(name);
+        final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
         if(!target.isPresent())
             return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
@@ -295,7 +294,7 @@ public class GeldEconomy implements Economy {
 
     @Override
     public boolean createPlayerAccount(String name) {
-        final Optional<UUID> uuid = CityCore.getAPI().getUUID(name);
+        final Optional<UUID> uuid = plugin.getIdentificationProvider().getUUID(name);
 
         if(!uuid.isPresent())
             return false;

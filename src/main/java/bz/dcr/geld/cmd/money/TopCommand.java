@@ -1,10 +1,9 @@
 package bz.dcr.geld.cmd.money;
 
-import bz.dcr.citycore.CityCore;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.cmd.IGeldCommand;
 import bz.dcr.geld.data.PlayerData;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -45,7 +44,7 @@ public class TopCommand implements IGeldCommand {
 
             Optional<String> currentPlayerName;
             for(int i = 0; i < data.size(); i++){
-                currentPlayerName = CityCore.getAPI().getName(data.get(i).getUniqueId());
+                currentPlayerName = plugin.getIdentificationProvider().getName(data.get(i).getUniqueId());
 
                 if(!currentPlayerName.isPresent())
                     currentPlayerName = Optional.of("Unknown");
@@ -86,7 +85,7 @@ public class TopCommand implements IGeldCommand {
 
             Optional<String> currentPlayerName;
             for(int i = 0; i < data.size(); i++){
-                currentPlayerName = CityCore.getAPI().getName(data.get(i).getUniqueId());
+                currentPlayerName = plugin.getIdentificationProvider().getName(data.get(i).getUniqueId());
 
                 if(!currentPlayerName.isPresent())
                     currentPlayerName = Optional.of("Unknown");

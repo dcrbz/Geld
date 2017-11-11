@@ -12,6 +12,7 @@ import bz.dcr.geld.cmd.pin.RedeemCommand;
 import bz.dcr.geld.data.Database;
 import bz.dcr.geld.data.MoneyManager;
 import bz.dcr.geld.data.MongoDB;
+import bz.dcr.geld.identification.IdentificationProvider;
 import bz.dcr.geld.listeners.ConnectListener;
 import bz.dcr.geld.logging.GeldLogger;
 import bz.dcr.geld.logging.VaultLogger;
@@ -38,6 +39,7 @@ public class Geld extends JavaPlugin {
     private ExecutorService executor;
     private AlertManager alertManager;
     private PluginMessageManager pluginMessageManager;
+    private IdentificationProvider identificationProvider;
 
     // dcCore
     private DcCorePlugin dcCorePlugin;
@@ -76,7 +78,11 @@ public class Geld extends JavaPlugin {
         this.moneyManager = new MoneyManager(this);
         this.pinManager = new PinManager(this);
         this.alertManager = new AlertManager(this);
+
         this.setupDcCore();
+
+        this.identificationProvider = new IdentificationProvider(this);
+
         this.registerCommands();
         this.registerListeners();
     }
@@ -206,6 +212,14 @@ public class Geld extends JavaPlugin {
 
     public PluginMessageManager getPluginMessageManager(){
         return pluginMessageManager;
+    }
+
+    public DcCorePlugin getDcCorePlugin() {
+        return dcCorePlugin;
+    }
+
+    public IdentificationProvider getIdentificationProvider() {
+        return identificationProvider;
     }
 
 

@@ -1,10 +1,9 @@
 package bz.dcr.geld.cmd.money;
 
-import bz.dcr.citycore.CityCore;
-import bz.dcr.citycore.util.Pagifier;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.api.Transaction;
 import bz.dcr.geld.cmd.IGeldCommand;
+import bz.dcr.geld.util.Pagifier;
 import bz.dcr.geld.util.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -48,7 +47,7 @@ public class PTransactionsCommand implements IGeldCommand {
                     }
                 }
 
-                final Optional<UUID> target = CityCore.getAPI().getUUID(args[1]);
+                final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
                 // Target is not existing
                 if(!target.isPresent()){

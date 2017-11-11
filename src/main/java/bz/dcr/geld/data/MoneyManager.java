@@ -114,7 +114,7 @@ public class MoneyManager {
      * @param transaction The Transaction object
      * @return Result of the transaction
      */
-    public TransferResult doTransfer(Transaction transaction){
+    public TransferResult doTransfer(Transaction transaction) {
         // Subtract from sender
         final Result decrease = this.decreaseBalance(transaction.getSender(), transaction.getValue() + transaction.getTax());
         if(decrease != Result.SUCCESS)

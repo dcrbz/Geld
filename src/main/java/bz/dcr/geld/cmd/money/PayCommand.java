@@ -1,12 +1,11 @@
 package bz.dcr.geld.cmd.money;
 
-import bz.dcr.citycore.CityCore;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.api.Transaction;
 import bz.dcr.geld.cmd.IGeldCommand;
 import bz.dcr.geld.data.MoneyManager;
 import bz.dcr.geld.data.PlayerData;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -42,7 +41,7 @@ public class PayCommand implements IGeldCommand {
         }
 
         this.plugin.getExecutor().execute(() -> {
-            final Optional<UUID> target = CityCore.getAPI().getUUID(args[1]);
+            final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
             double value = 0.0D;
 
             // Value is not valid
