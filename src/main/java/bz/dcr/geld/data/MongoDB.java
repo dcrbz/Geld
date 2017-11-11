@@ -3,7 +3,9 @@ package bz.dcr.geld.data;
 import bz.dcr.geld.api.Transaction;
 import bz.dcr.geld.pin.RedeemablePin;
 import bz.dcr.geld.pin.results.PinValidationResult;
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
@@ -14,12 +16,9 @@ import java.util.*;
 public class MongoDB extends Database {
 
     private MongoClient client;
-    private DB db;
-    private ServerAddress serverAddress;
-    private MongoClientOptions options;
-    private MongoCredential credential;
+    private MongoClientURI uri;
+    private DB database;
     private Jongo jongo;
-    private boolean auth;
 
     // Collections
     private MongoCollection playerCollection;
@@ -27,23 +26,17 @@ public class MongoDB extends Database {
     private MongoCollection pinCollection;
 
     // Constructor
-    public MongoDB(ServerAddress serverAddress, MongoClientOptions options, MongoCredential credential, boolean auth){
-        this.serverAddress = serverAddress;
-        this.options = options;
-        this.credential = credential;
-        this.auth = auth;
+    public MongoDB(MongoClientURI uri) {
+        this.uri = uri;
     }
 
 
     @Override
     public void init() {
-        if(this.auth)
-            this.client = new MongoClient(this.serverAddress, Arrays.asList(this.credential), this.options);
-        else
-            this.client = new MongoClient(this.serverAddress, this.options);
+        this.client = new MongoClient(uri);
 
-        this.db = this.client.getDB(this.credential.getSource());
-        this.jongo = new Jongo(this.db);
+        this.database = client.getDB(uri.getDatabase());
+        this.jongo = new Jongo(database);
 
         // Collections
         this.playerCollection = this.jongo.getCollection("players");

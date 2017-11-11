@@ -1,5 +1,6 @@
 package bz.dcr.geld;
 
+import bz.dcr.dccore.DcCorePlugin;
 import bz.dcr.geld.api.GeldEconomy;
 import bz.dcr.geld.cmd.CommandManager;
 import bz.dcr.geld.cmd.MoneyCommand;
@@ -18,9 +19,8 @@ import bz.dcr.geld.messaging.PluginMessageManager;
 import bz.dcr.geld.pin.PinManager;
 import bz.dcr.geld.util.AlertManager;
 import bz.dcr.geld.util.LangManager;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.MongoClientURI;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,6 +39,9 @@ public class Geld extends JavaPlugin {
     private AlertManager alertManager;
     private PluginMessageManager pluginMessageManager;
 
+    // dcCore
+    private DcCorePlugin dcCorePlugin;
+
     // Logging
     private GeldLogger geldLogger;
     private VaultLogger vaultLogger;
@@ -47,11 +50,12 @@ public class Geld extends JavaPlugin {
     private CommandManager moneyCommandManager;
     private CommandManager pinCommandManager;
 
+
     @Override
     public void onEnable() {
         this.registerEconomy();
 
-        if(this.isFirstStart()){
+        if (this.isFirstStart()){
             this.loadConfig();
             this.getLogger().info("Erster Start: Bitte konfiguriere die Datenbank-Einstellungen!");
             this.getServer().shutdown();
@@ -72,6 +76,7 @@ public class Geld extends JavaPlugin {
         this.moneyManager = new MoneyManager(this);
         this.pinManager = new PinManager(this);
         this.alertManager = new AlertManager(this);
+        this.setupDcCore();
         this.registerCommands();
         this.registerListeners();
     }
@@ -94,15 +99,7 @@ public class Geld extends JavaPlugin {
 
     private void loadConfig(){
         this.getConfig().options().copyDefaults(true);
-        this.getConfig().addDefault("Database.Host", "127.0.0.1");
-        this.getConfig().addDefault("Database.Port", 27017);
-        this.getConfig().addDefault("Database.Database", "city_geld");
-        this.getConfig().addDefault("Database.Auth.Enabled", false);
-        this.getConfig().addDefault("Database.Auth.Type", "SCRAM-SHA-1");
-        this.getConfig().addDefault("Database.Auth.Username", "root");
-        this.getConfig().addDefault("Database.Auth.Password", "password");
-        this.getConfig().addDefault("Database.Advanced.Min-Connections", 3);
-        this.getConfig().addDefault("Database.Advanced.SSL-Enabled", true);
+        this.getConfig().addDefault("MongoDB.Uri", "mongodb://127.0.0.1:27017/geld");
         this.getConfig().addDefault("BungeeCord", true);
         this.getConfig().addDefault("Currency.Name-Singular", "DM");
         this.getConfig().addDefault("Currency.Name-Plural", "DM");
@@ -118,51 +115,9 @@ public class Geld extends JavaPlugin {
     }
 
     private void initDatabase(){
-        MongoCredential dbCredential;
-        if(this.getConfig().getBoolean("Database.Auth.Enabled")){
-            switch (this.getConfig().getString("Database.Auth.Type").toUpperCase()){
-                case "SCRAM-SHA-1":
-                    dbCredential = MongoCredential.createScramSha1Credential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-                    break;
-                case "MONGODB-CR":
-                    dbCredential = MongoCredential.createMongoCRCredential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-                    break;
-                case "X509":
-                    dbCredential = MongoCredential.createMongoX509Credential(this.getConfig().getString("Database.Auth.Username"));
-                    break;
-                case "PLAIN":
-                    dbCredential = MongoCredential.createPlainCredential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-                    break;
-                case "GSSAPI":
-                    dbCredential = MongoCredential.createGSSAPICredential(this.getConfig().getString("Database.Auth.Username"));
-                    break;
-                case "NONE":
-                    dbCredential = MongoCredential.createCredential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-                    break;
-                default:
-                    dbCredential = MongoCredential.createCredential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-            }
-        } else {
-            dbCredential = MongoCredential.createCredential(this.getConfig().getString("Database.Auth.Username"), this.getConfig().getString("Database.Database"), this.getConfig().getString("Database.Auth.Password").toCharArray());
-        }
-
-        // Inform about used auth mechanism
-        this.getLogger().info("Verwende Authentifizierungsmethode: " + (this.getConfig().getBoolean("Database.Auth.Enabled") ? this.getConfig().getString("Database.Auth.Type").toUpperCase() : "KEINE"));
-
-        final MongoClientOptions dbOptions = MongoClientOptions.builder()
-                .minConnectionsPerHost( this.getConfig().getInt("Database.Advanced.Min-Connections") )
-                .sslEnabled( this.getConfig().getBoolean("Database.Advanced.SSL-Enabled") )
-                .description("GELD_MONGO")
-                .build();
-        this.database = new MongoDB(
-                new ServerAddress(
-                        this.getConfig().getString("Database.Host"),
-                        this.getConfig().getInt("Database.Port")
-                ),
-                dbOptions,
-                dbCredential,
-                this.getConfig().getBoolean("Database.Auth.Enabled")
-        );
+        this.database = new MongoDB(new MongoClientURI(
+                getConfig().getString("MongoDB.Uri")
+        ));
         this.database.init();
     }
 
@@ -188,6 +143,19 @@ public class Geld extends JavaPlugin {
 
     private void registerListeners(){
         this.getServer().getPluginManager().registerEvents(new ConnectListener(this), this);
+    }
+
+    private void setupDcCore() {
+        final Plugin dcCorePlugin = getServer().getPluginManager().getPlugin("dcCore");
+
+        // dcCore not installed
+        if (dcCorePlugin == null) {
+            getLogger().warning("dcCore wurde nicht gefunden!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        this.dcCorePlugin = (DcCorePlugin) dcCorePlugin;
     }
 
     private void registerEconomy(){
