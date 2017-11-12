@@ -22,11 +22,7 @@ public class ConnectListener implements Listener {
             return;
 
         // Add player to database
-        this.plugin.getDB().addPlayer(
-                new PlayerData(
-                        e.getUniqueId()
-                )
-        );
+        this.plugin.getDB().addPlayer(new PlayerData(e.getUniqueId()));
     }
 
 }

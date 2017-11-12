@@ -10,8 +10,8 @@ import bz.dcr.geld.cmd.pin.BuyCommand;
 import bz.dcr.geld.cmd.pin.GenerateCommand;
 import bz.dcr.geld.cmd.pin.RedeemCommand;
 import bz.dcr.geld.data.Database;
+import bz.dcr.geld.data.GeldDatabase;
 import bz.dcr.geld.data.MoneyManager;
-import bz.dcr.geld.data.MongoDB;
 import bz.dcr.geld.identification.IdentificationProvider;
 import bz.dcr.geld.listeners.ConnectListener;
 import bz.dcr.geld.logging.GeldLogger;
@@ -121,9 +121,10 @@ public class Geld extends JavaPlugin {
     }
 
     private void initDatabase(){
-        this.database = new MongoDB(new MongoClientURI(
-                getConfig().getString("MongoDB.Uri")
-        ));
+        this.database = new GeldDatabase(
+                getClassLoader(),
+                new MongoClientURI(getConfig().getString("MongoDB.Uri"))
+        );
         this.database.init();
     }
 
