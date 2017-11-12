@@ -6,7 +6,7 @@
 
     <groupId>bz.dcr.geld</groupId>
     <artifactId>Geld</artifactId>
-    <version>3.4.0</version>
+    <version>3.5.0</version>
 
     <properties>
         <javaVersion>1.8</javaVersion>
