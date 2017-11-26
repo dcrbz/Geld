@@ -3,7 +3,6 @@ package bz.dcr.geld.cmd.money;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.cmd.IGeldCommand;
 import bz.dcr.geld.data.MoneyManager;
-import bz.dcr.geld.logging.GeldLogger;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -63,43 +62,6 @@ public class GiveCommand implements IGeldCommand {
 
     @Override
     public void executePlayer(Player sender, String[] args) {
-
-        // Noob filter
-        if(!sender.hasPermission("money.give")){
-            this.plugin.getExecutor().execute(() -> {
-                if(args.length == 2){
-                    // Invalid number
-                    if(!NumberUtils.isNumber(args[1])){
-                        sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
-                        return;
-                    }
-
-                    final double value = Double.parseDouble(args[1]);
-
-                    sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGive", this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().get("Currency.Name-Plural")));
-
-                    // Log noob
-                    this.plugin.getGeldLogger().log(sender.getName() + " -> " + sender.getName() + " (" + value + ")", GeldLogger.LogLevel.GIVE_NOOBFILTER);
-                } else if(args.length == 3){
-                    // Invalid number
-                    if(!NumberUtils.isNumber(args[2])){
-                        sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[2]));
-                        return;
-                    }
-
-                    final double value = Double.parseDouble(args[2]);
-
-                    sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGiveOthers", args[1], this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().getString("Currency.Name-Plural")));
-
-                    // Log noob
-                    this.plugin.getGeldLogger().log(sender.getName() + " -> " + args[1] + " (" + value + ")", GeldLogger.LogLevel.GIVE_NOOBFILTER);
-                } else {
-                    this.printHelp(sender);
-                }
-            });
-            return;
-        }
-
         // Player has no permission
         if(!sender.hasPermission("money.give"))
             return;
