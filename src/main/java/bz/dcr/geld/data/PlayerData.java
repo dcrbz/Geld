@@ -1,9 +1,20 @@
 package bz.dcr.geld.data;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IndexOptions;
+import org.mongodb.morphia.annotations.Indexed;
+
 import java.util.UUID;
 
+@Entity
 public class PlayerData {
 
+    @Id
+    private ObjectId id;
+
+    @Indexed(options = @IndexOptions(unique = true))
     private UUID uniqueId;
     private String uniqueIdString;
     private double balance;
@@ -21,6 +32,10 @@ public class PlayerData {
         this.joinTime = System.currentTimeMillis();
     }
 
+
+    public ObjectId getId() {
+        return id;
+    }
 
     public double getBalance(){
         return this.balance;
