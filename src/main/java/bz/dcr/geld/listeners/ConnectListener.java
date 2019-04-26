@@ -11,14 +11,14 @@ public class ConnectListener implements Listener {
     private Geld plugin;
 
     // Constructor
-    public ConnectListener(Geld plugin){
+    public ConnectListener(Geld plugin) {
         this.plugin = plugin;
     }
 
 
     @EventHandler
-    public void onJoin(AsyncPlayerPreLoginEvent e){
-        if(e.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+    public void onJoin(AsyncPlayerPreLoginEvent e) {
+        if (e.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
             return;
 
         // Add player to database

@@ -19,7 +19,7 @@ public class Pagifier<T> {
         int pageNum = this.pages.size() - 1;
         List<T> currentPage = this.pages.get(pageNum);
 
-        if(currentPage.size() >= this.pageSize) {
+        if (currentPage.size() >= this.pageSize) {
             currentPage = new ArrayList();
             this.pages.add(currentPage);
         }

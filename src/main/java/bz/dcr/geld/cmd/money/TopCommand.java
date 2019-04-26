@@ -15,7 +15,7 @@ public class TopCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public TopCommand(Geld plugin){
+    public TopCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -29,10 +29,10 @@ public class TopCommand implements IGeldCommand {
                 data = this.plugin.getDB().getTop(10);
             } else if (args.length == 2) {
                 int amount;
-                if(!NumberUtils.isNumber(args[2])){
+                if (!NumberUtils.isNumber(args[2])) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
-                } else if((amount = Integer.parseInt(args[1])) < 1) {
+                } else if ((amount = Integer.parseInt(args[1])) < 1) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
                 }
@@ -43,10 +43,10 @@ public class TopCommand implements IGeldCommand {
             }
 
             Optional<String> currentPlayerName;
-            for(int i = 0; i < data.size(); i++){
+            for (int i = 0; i < data.size(); i++) {
                 currentPlayerName = plugin.getIdentificationProvider().getName(data.get(i).getUniqueId());
 
-                if(!currentPlayerName.isPresent())
+                if (!currentPlayerName.isPresent())
                     currentPlayerName = Optional.of("Unknown");
 
                 sender.sendMessage(
@@ -58,7 +58,7 @@ public class TopCommand implements IGeldCommand {
 
     @Override
     public void executePlayer(Player sender, String[] args) {
-        if(!sender.hasPermission("money.top")){
+        if (!sender.hasPermission("money.top")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
@@ -70,10 +70,10 @@ public class TopCommand implements IGeldCommand {
                 data = this.plugin.getDB().getTop(10);
             } else if (args.length == 2) {
                 int amount;
-                if(!NumberUtils.isNumber(args[1])){
+                if (!NumberUtils.isNumber(args[1])) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
-                } else if((amount = Integer.parseInt(args[1])) < 1) {
+                } else if ((amount = Integer.parseInt(args[1])) < 1) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
                 }
@@ -84,10 +84,10 @@ public class TopCommand implements IGeldCommand {
             }
 
             Optional<String> currentPlayerName;
-            for(int i = 0; i < data.size(); i++){
+            for (int i = 0; i < data.size(); i++) {
                 currentPlayerName = plugin.getIdentificationProvider().getName(data.get(i).getUniqueId());
 
-                if(!currentPlayerName.isPresent())
+                if (!currentPlayerName.isPresent())
                     currentPlayerName = Optional.of("Unknown");
 
                 sender.sendMessage(

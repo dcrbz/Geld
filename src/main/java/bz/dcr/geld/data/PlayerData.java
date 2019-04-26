@@ -22,9 +22,10 @@ public class PlayerData {
     private long joinTime;
 
     // Constructor
-    public PlayerData(){}
+    public PlayerData() {
+    }
 
-    public PlayerData(UUID uniqueId){
+    public PlayerData(UUID uniqueId) {
         this.uniqueId = uniqueId;
         this.uniqueIdString = uniqueId.toString().replace("-", "");
         this.balance = 0.0D;
@@ -37,39 +38,39 @@ public class PlayerData {
         return id;
     }
 
-    public double getBalance(){
+    public double getBalance() {
         return this.balance;
     }
 
-    public void setBalance(double balance){
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
 
-    public UUID getUniqueId(){
+    public UUID getUniqueId() {
         return this.uniqueId;
     }
 
-    public void setUniqueId(UUID uniqueId){
+    public void setUniqueId(UUID uniqueId) {
         this.uniqueId = uniqueId;
         this.uniqueIdString = uniqueId.toString().replace("-", "");
     }
 
 
-    public boolean doesAcceptTransfers(){
+    public boolean doesAcceptTransfers() {
         return this.acceptTransfer;
     }
 
-    public void setAcceptTransfer(boolean acceptTransfer){
+    public void setAcceptTransfer(boolean acceptTransfer) {
         this.acceptTransfer = acceptTransfer;
     }
 
 
-    public long getJoinTime(){
+    public long getJoinTime() {
         return this.joinTime;
     }
 
-    public void setJoinTime(long joinTime){
+    public void setJoinTime(long joinTime) {
         this.joinTime = joinTime;
     }
 

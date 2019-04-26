@@ -6,18 +6,18 @@
 
     <groupId>bz.dcr.geld</groupId>
     <artifactId>Geld</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
 
     <properties>
         <javaVersion>1.8</javaVersion>
-        <spigotVersion>1.12.2-R0.1-SNAPSHOT</spigotVersion>
+        <spigotVersion>1.13.2-R0.1-SNAPSHOT</spigotVersion>
     </properties>
 
     <repositories>
         <!-- deinCraft Repository -->
         <repository>
             <id>deincraft-repo</id>
-            <url>https://repo.dcr.bz/artifactory/deincraft-repo</url>
+            <url>https://maven.dtl.bz/artifactory/public</url>
         </repository>
     </repositories>
 
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>bz.dcr</groupId>
             <artifactId>dccore-spigot</artifactId>
-            <version>1.0.14</version>
+            <version>1.2.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -62,7 +62,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>

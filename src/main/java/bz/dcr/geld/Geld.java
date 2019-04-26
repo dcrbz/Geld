@@ -57,7 +57,7 @@ public class Geld extends JavaPlugin {
     public void onEnable() {
         this.registerEconomy();
 
-        if (this.isFirstStart()){
+        if (this.isFirstStart()) {
             this.loadConfig();
             this.getLogger().info("Erster Start: Bitte konfiguriere die Datenbank-Einstellungen!");
             this.getServer().shutdown();
@@ -90,20 +90,20 @@ public class Geld extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            if(this.geldLogger != null)
+            if (this.geldLogger != null)
                 this.geldLogger.close();
-            if(this.vaultLogger != null)
+            if (this.vaultLogger != null)
                 this.vaultLogger.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(this.database != null)
+        if (this.database != null)
             this.database.shutdown();
     }
 
 
-    private void loadConfig(){
+    private void loadConfig() {
         this.getConfig().options().copyDefaults(true);
         this.getConfig().addDefault("MongoDB.Uri", "mongodb://127.0.0.1:27017/geld");
         this.getConfig().addDefault("BungeeCord", true);
@@ -116,11 +116,11 @@ public class Geld extends JavaPlugin {
         this.getConfig().addDefault("Transaction-Tax.Percent", 5);
         this.getConfig().addDefault("Logging.Log-Transactions", true);
         this.getConfig().addDefault("Logging.Log-Vault", true);
-        this.getConfig().addDefault("Logging.Transfers.Critical-Thresold", 50000.0D);
+        this.getConfig().addDefault("Logging.Transfers.Critical-Threshold", 50000.0D);
         this.saveConfig();
     }
 
-    private void initDatabase(){
+    private void initDatabase() {
         this.database = new GeldDatabase(
                 getClassLoader(),
                 new MongoClientURI(getConfig().getString("MongoDB.Uri"))
@@ -128,7 +128,7 @@ public class Geld extends JavaPlugin {
         this.database.init();
     }
 
-    private void registerCommands(){
+    private void registerCommands() {
         // Money command
         this.moneyCommandManager = new CommandManager(this, "money", new MoneyCommand(this));
         this.moneyCommandManager.registerCommand("pay", new PayCommand(this));
@@ -148,7 +148,7 @@ public class Geld extends JavaPlugin {
         this.pinCommandManager.registerCommand("generate", new GenerateCommand(this));
     }
 
-    private void registerListeners(){
+    private void registerListeners() {
         this.getServer().getPluginManager().registerEvents(new ConnectListener(this), this);
     }
 
@@ -165,53 +165,53 @@ public class Geld extends JavaPlugin {
         this.dcCorePlugin = (DcCorePlugin) dcCorePlugin;
     }
 
-    private void registerEconomy(){
-        if(this.getServer().getPluginManager().getPlugin("Vault") != null)
+    private void registerEconomy() {
+        if (this.getServer().getPluginManager().getPlugin("Vault") != null)
             this.getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new GeldEconomy(this), this, ServicePriority.Highest);
         else
             this.getLogger().warning("Vault wurde nicht gefunden. Wechsle in API Modus.");
     }
 
-    private boolean isFirstStart(){
+    private boolean isFirstStart() {
         return !new File("plugins" + File.separatorChar + this.getName() + File.separatorChar + "config.yml").exists();
     }
 
 
     /* GETTERS */
 
-    public Database getDB(){
+    public Database getDB() {
         return database;
     }
 
-    public LangManager getLang(){
+    public LangManager getLang() {
         return langManager;
     }
 
-    public MoneyManager getEconomy(){
+    public MoneyManager getEconomy() {
         return moneyManager;
     }
 
-    public PinManager getPinManager(){
+    public PinManager getPinManager() {
         return pinManager;
     }
 
-    public ExecutorService getExecutor(){
+    public ExecutorService getExecutor() {
         return executor;
     }
 
-    public GeldLogger getGeldLogger(){
+    public GeldLogger getGeldLogger() {
         return geldLogger;
     }
 
-    public VaultLogger getVaultLogger(){
+    public VaultLogger getVaultLogger() {
         return vaultLogger;
     }
 
-    public AlertManager getAlertManager(){
+    public AlertManager getAlertManager() {
         return alertManager;
     }
 
-    public PluginMessageManager getPluginMessageManager(){
+    public PluginMessageManager getPluginMessageManager() {
         return pluginMessageManager;
     }
 
@@ -226,11 +226,11 @@ public class Geld extends JavaPlugin {
 
     // CommandManagers
 
-    public CommandManager getMoneyCommandManager(){
+    public CommandManager getMoneyCommandManager() {
         return this.moneyCommandManager;
     }
 
-    public CommandManager getPinCommandManager(){
+    public CommandManager getPinCommandManager() {
         return this.pinCommandManager;
     }
 

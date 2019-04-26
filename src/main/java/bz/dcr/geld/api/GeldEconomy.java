@@ -17,7 +17,7 @@ public class GeldEconomy implements Economy {
     private Geld plugin;
 
     // Constructor
-    public GeldEconomy(Geld plugin){
+    public GeldEconomy(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -83,12 +83,12 @@ public class GeldEconomy implements Economy {
     public double getBalance(String name) {
         final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
-        if(!target.isPresent())
+        if (!target.isPresent())
             return 0.0D;
 
         final Optional<PlayerData> data = this.plugin.getEconomy().getPlayerData(target.get());
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return 0.0D;
 
         return data.get().getBalance();
@@ -98,7 +98,7 @@ public class GeldEconomy implements Economy {
     public double getBalance(OfflinePlayer offlinePlayer) {
         final Optional<PlayerData> data = this.plugin.getEconomy().getPlayerData(offlinePlayer.getUniqueId());
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return 0.0D;
 
         return data.get().getBalance();
@@ -138,19 +138,22 @@ public class GeldEconomy implements Economy {
     public EconomyResponse withdrawPlayer(String name, double value) {
         final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
-        if(!target.isPresent())
+        if (!target.isPresent())
             return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
 
         final MoneyManager.Result result = this.plugin.getEconomy().decreaseBalance(target.get(), value);
 
         // Logging
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log( name, ste, value, VaultLogger.LogLevel.DECREASE ) );
+        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log(name, ste, value, VaultLogger.LogLevel.DECREASE));
 
-        switch(result){
-            case SUCCESS: return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.SUCCESS, "");
-            case UNKNOWN_PLAYER: return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
-            case INEXISTENT_PLAYER: return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
+        switch (result) {
+            case SUCCESS:
+                return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.SUCCESS, "");
+            case UNKNOWN_PLAYER:
+                return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
+            case INEXISTENT_PLAYER:
+                return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
         }
 
         return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Unknown error");
@@ -162,12 +165,15 @@ public class GeldEconomy implements Economy {
 
         // Logging
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log( offlinePlayer.getName(), ste, value, VaultLogger.LogLevel.DECREASE ) );
+        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log(offlinePlayer.getName(), ste, value, VaultLogger.LogLevel.DECREASE));
 
-        switch(result){
-            case SUCCESS: return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
-            case UNKNOWN_PLAYER: return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
-            case INEXISTENT_PLAYER: return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.FAILURE, "Player not existing");
+        switch (result) {
+            case SUCCESS:
+                return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
+            case UNKNOWN_PLAYER:
+                return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
+            case INEXISTENT_PLAYER:
+                return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.FAILURE, "Player not existing");
         }
 
         return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Unknown error");
@@ -187,19 +193,22 @@ public class GeldEconomy implements Economy {
     public EconomyResponse depositPlayer(String name, double value) {
         final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(name);
 
-        if(!target.isPresent())
+        if (!target.isPresent())
             return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
 
         final MoneyManager.Result result = this.plugin.getEconomy().increaseBalance(target.get(), value);
 
         // Logging
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log( name, ste, value, VaultLogger.LogLevel.INCREASE ) );
+        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log(name, ste, value, VaultLogger.LogLevel.INCREASE));
 
-        switch(result){
-            case SUCCESS: return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.SUCCESS, "");
-            case UNKNOWN_PLAYER: return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
-            case INEXISTENT_PLAYER: return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
+        switch (result) {
+            case SUCCESS:
+                return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.SUCCESS, "");
+            case UNKNOWN_PLAYER:
+                return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
+            case INEXISTENT_PLAYER:
+                return new EconomyResponse(value, this.getBalance(name), EconomyResponse.ResponseType.FAILURE, "Player not existing");
         }
 
         return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Unknown error");
@@ -211,12 +220,15 @@ public class GeldEconomy implements Economy {
 
         // Logging
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log( offlinePlayer.getName(), ste, value, VaultLogger.LogLevel.INCREASE ) );
+        this.plugin.getExecutor().execute(() -> this.plugin.getVaultLogger().log(offlinePlayer.getName(), ste, value, VaultLogger.LogLevel.INCREASE));
 
-        switch(result){
-            case SUCCESS: return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
-            case UNKNOWN_PLAYER: return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
-            case INEXISTENT_PLAYER: return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.FAILURE, "Player not existing");
+        switch (result) {
+            case SUCCESS:
+                return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
+            case UNKNOWN_PLAYER:
+                return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Player not known");
+            case INEXISTENT_PLAYER:
+                return new EconomyResponse(value, this.getBalance(offlinePlayer), EconomyResponse.ResponseType.FAILURE, "Player not existing");
         }
 
         return new EconomyResponse(value, 0.0D, EconomyResponse.ResponseType.FAILURE, "Unknown error");
@@ -296,7 +308,7 @@ public class GeldEconomy implements Economy {
     public boolean createPlayerAccount(String name) {
         final Optional<UUID> uuid = plugin.getIdentificationProvider().getUUID(name);
 
-        if(!uuid.isPresent())
+        if (!uuid.isPresent())
             return false;
 
         final PlayerData data = new PlayerData(uuid.get());

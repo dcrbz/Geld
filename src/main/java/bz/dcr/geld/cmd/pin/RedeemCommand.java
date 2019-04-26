@@ -13,7 +13,7 @@ public class RedeemCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public RedeemCommand(Geld plugin){
+    public RedeemCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -26,23 +26,23 @@ public class RedeemCommand implements IGeldCommand {
     @Override
     public void executePlayer(Player sender, String[] args) {
         // No permission
-        if(!sender.hasPermission("pin.redeem")){
+        if (!sender.hasPermission("pin.redeem")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
 
         this.plugin.getExecutor().execute(() -> {
-            if(args.length == 2){
+            if (args.length == 2) {
                 final Optional<RedeemablePin> pin = this.plugin.getDB().getRedeemablePin(args[1]);
 
                 // Invalid pin
-                if(!pin.isPresent()){
+                if (!pin.isPresent()) {
                     sender.sendMessage(this.plugin.getLang().getPrefixedMessage("pinNotValid"));
                     return;
                 }
 
                 // Pin already redeemed
-                if(pin.get().getValue() != pin.get().getInitialValue()){
+                if (pin.get().getValue() != pin.get().getInitialValue()) {
                     sender.sendMessage(this.plugin.getLang().getPrefixedMessage("pinAlreadyRedeemed"));
                     return;
                 }

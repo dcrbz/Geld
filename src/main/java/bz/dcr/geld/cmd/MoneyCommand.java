@@ -14,7 +14,7 @@ public class MoneyCommand implements CommandExecutor {
     private Geld plugin;
 
     // Constructor
-    public MoneyCommand(Geld plugin){
+    public MoneyCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -22,13 +22,13 @@ public class MoneyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(args.length == 0){
-            if(!(sender instanceof Player)){
+        if (args.length == 0) {
+            if (!(sender instanceof Player)) {
                 sender.sendMessage(this.plugin.getLang().getMessage("playerCommand"));
                 return true;
             }
 
-            if(!sender.hasPermission("money.balance")){
+            if (!sender.hasPermission("money.balance")) {
                 sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
                 return true;
             }
@@ -39,7 +39,7 @@ public class MoneyCommand implements CommandExecutor {
                 final Optional<PlayerData> playerData = this.plugin.getEconomy().getPlayerData(player.getUniqueId());
 
                 // Player has not played before
-                if(!playerData.isPresent()){
+                if (!playerData.isPresent()) {
                     sender.sendMessage(this.plugin.getLang().getPrefixedMessage("unknownNamedPlayer", args[1]));
                     return;
                 }
@@ -50,7 +50,7 @@ public class MoneyCommand implements CommandExecutor {
         } else {
             IGeldCommand command = this.plugin.getMoneyCommandManager().getCommand(args[0].toLowerCase());
 
-            if(command != null){
+            if (command != null) {
                 this.plugin.getMoneyCommandManager().executeCommand(command, sender, args);
                 return true;
             } else {

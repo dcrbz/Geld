@@ -14,29 +14,29 @@ public class CommandManager {
     private Map<String, IGeldCommand> commands = new HashMap<>();
 
     // Constructor
-    public CommandManager(Geld plugin, String mainCommand, CommandExecutor commandExecutor){
+    public CommandManager(Geld plugin, String mainCommand, CommandExecutor commandExecutor) {
         this.plugin = plugin;
         this.plugin.getCommand(mainCommand).setExecutor(commandExecutor);
     }
 
 
-    public void registerCommand(String subCommand, IGeldCommand subCommandExecutor){
+    public void registerCommand(String subCommand, IGeldCommand subCommandExecutor) {
         this.commands.put(subCommand, subCommandExecutor);
     }
 
-    public IGeldCommand getCommand(String command){
+    public IGeldCommand getCommand(String command) {
         return this.commands.get(command);
     }
 
-    public void executeCommand(String command, CommandSender sender, String[] args){
-        if(sender instanceof Player)
+    public void executeCommand(String command, CommandSender sender, String[] args) {
+        if (sender instanceof Player)
             this.getCommand(command).executePlayer((Player) sender, args);
-         else
+        else
             this.getCommand(command).execute(sender, args);
     }
 
-    public void executeCommand(IGeldCommand command, CommandSender sender, String[] args){
-        if(sender instanceof Player)
+    public void executeCommand(IGeldCommand command, CommandSender sender, String[] args) {
+        if (sender instanceof Player)
             command.executePlayer((Player) sender, args);
         else
             command.execute(sender, args);

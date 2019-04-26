@@ -7,7 +7,7 @@ public class PinManager {
     private Geld plugin;
 
     // Constructor
-    public PinManager(Geld plugin){
+    public PinManager(Geld plugin) {
         this.plugin = plugin;
     }
 

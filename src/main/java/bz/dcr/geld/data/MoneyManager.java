@@ -15,40 +15,43 @@ public class MoneyManager {
     private Geld plugin;
 
     // Constructor
-    public MoneyManager(Geld plugin){
+    public MoneyManager(Geld plugin) {
         this.plugin = plugin;
     }
 
 
     /**
      * Returns an Optional with a players data
+     *
      * @param uuid UUID of the target player
      * @return An Optional with the targets data
      */
-    public Optional<PlayerData> getPlayerData(UUID uuid){
+    public Optional<PlayerData> getPlayerData(UUID uuid) {
         return this.plugin.getDB().getPlayerData(uuid);
     }
 
     /**
      * Set player data in cache or database
+     *
      * @param data PlayerData object
      * @return Result of setting the data
      */
-    public Result setPlayerData(PlayerData data){
+    public Result setPlayerData(PlayerData data) {
         this.plugin.getDB().setPlayerData(data);
         return Result.SUCCESS;
     }
 
     /**
      * Set player balance in cache or database
-     * @param uuid UUID of the target player
+     *
+     * @param uuid    UUID of the target player
      * @param balance New balance of target player
      * @return Result of setting the data
      */
-    public Result setBalance(UUID uuid, double balance){
+    public Result setBalance(UUID uuid, double balance) {
         final Optional<PlayerData> data = this.plugin.getDB().getPlayerData(uuid);
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return Result.UNKNOWN_PLAYER;
 
         data.get().setBalance(balance);
@@ -58,14 +61,15 @@ public class MoneyManager {
 
     /**
      * Increase player balance in cache or database
-     * @param uuid UUID of the target player
+     *
+     * @param uuid    UUID of the target player
      * @param balance Value that gets added to the targets balance
      * @return Result of setting the data
      */
-    public Result increaseBalance(UUID uuid, double balance){
+    public Result increaseBalance(UUID uuid, double balance) {
         final Optional<PlayerData> data = this.plugin.getDB().getPlayerData(uuid);
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return Result.UNKNOWN_PLAYER;
 
         data.get().setBalance(data.get().getBalance() + balance);
@@ -75,14 +79,15 @@ public class MoneyManager {
 
     /**
      * Decrease player balance in cache or database
-     * @param uuid UUID of the target player
+     *
+     * @param uuid    UUID of the target player
      * @param balance Value that gets removed from the targets balance
      * @return Result of setting the data
      */
-    public Result decreaseBalance(UUID uuid, double balance){
+    public Result decreaseBalance(UUID uuid, double balance) {
         final Optional<PlayerData> data = this.plugin.getDB().getPlayerData(uuid);
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return Result.UNKNOWN_PLAYER;
 
         data.get().setBalance(data.get().getBalance() - balance);
@@ -92,14 +97,15 @@ public class MoneyManager {
 
     /**
      * Set the transaction status of a player
-     * @param uuid UUID of the target player
+     *
+     * @param uuid   UUID of the target player
      * @param status New status
      * @return The result of setting the player's status
      */
-    public Result setTransactionStatus(UUID uuid, boolean status){
+    public Result setTransactionStatus(UUID uuid, boolean status) {
         final Optional<PlayerData> data = this.plugin.getDB().getPlayerData(uuid);
 
-        if(!data.isPresent())
+        if (!data.isPresent())
             return Result.UNKNOWN_PLAYER;
 
         data.get().setAcceptTransfer(status);
@@ -108,25 +114,25 @@ public class MoneyManager {
     }
 
 
-
     /**
      * Do a given transfer
+     *
      * @param transaction The Transaction object
      * @return Result of the transaction
      */
     public TransferResult doTransfer(Transaction transaction) {
         // Subtract from sender
         final Result decrease = this.decreaseBalance(transaction.getSender(), transaction.getValue() + transaction.getTax());
-        if(decrease != Result.SUCCESS)
+        if (decrease != Result.SUCCESS)
             return TransferResult.SENDER_ERR;
 
         // Add to target
         final Result increase = this.increaseBalance(transaction.getTarget(), transaction.getValue());
-        if(increase != Result.SUCCESS)
+        if (increase != Result.SUCCESS)
             return TransferResult.TARGET_ERR;
 
         // Log (critical) transaction
-        if(transaction.getValue() >= this.plugin.getConfig().getDouble("Logging.Transfers.Critical-Thresold")){
+        if (transaction.getValue() >= this.plugin.getConfig().getDouble("Logging.Transfers.Critical-Threshold")) {
             this.plugin.getAlertManager().handleCriticalTransaction(transaction);
             this.plugin.getGeldLogger().log(
                     this.plugin.getLang().getMessage("logTransaction", transaction.getSenderName(), transaction.getTargetName(), this.plugin.getLang().formatCurrency(transaction.getValue())),
@@ -144,12 +150,12 @@ public class MoneyManager {
         Bukkit.getScheduler().runTask(this.plugin, () -> {
             final Player targetPlayer = Bukkit.getPlayer(transaction.getTarget());
 
-            if(targetPlayer != null)
+            if (targetPlayer != null)
                 targetPlayer.sendMessage(receiveMessage);
             else {
                 final Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 
-                if(players.size() > 0)
+                if (players.size() > 0)
                     plugin.getPluginMessageManager().sendTransactionMessage(players.iterator().next(), transaction);
             }
         });

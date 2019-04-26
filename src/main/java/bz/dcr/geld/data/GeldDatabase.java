@@ -143,8 +143,8 @@ public class GeldDatabase extends Database {
     public PinValidationResult validatePin(String pinCode) {
         final Optional<RedeemablePin> redeemablePin = this.getRedeemablePin(pinCode);
 
-        if(redeemablePin.isPresent()){
-            if(redeemablePin.get().getValue() != redeemablePin.get().getInitialValue())
+        if (redeemablePin.isPresent()) {
+            if (redeemablePin.get().getValue() != redeemablePin.get().getInitialValue())
                 return PinValidationResult.EXISTING_REDEEMED;
             else
                 return PinValidationResult.EXISTING_NOT_REDEEMED;

@@ -15,16 +15,16 @@ public class GiveCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public GiveCommand(Geld plugin){
+    public GiveCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(args.length == 3){
+        if (args.length == 3) {
             // Player has no permission
-            if(!sender.hasPermission("money.give.others")){
+            if (!sender.hasPermission("money.give.others")) {
                 sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
                 return;
             }
@@ -33,13 +33,13 @@ public class GiveCommand implements IGeldCommand {
                 final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
                 // Target does not exist
-                if(!target.isPresent()){
+                if (!target.isPresent()) {
                     sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1]));
                     return;
                 }
 
                 // Invalid number
-                if(!NumberUtils.isNumber(args[2])){
+                if (!NumberUtils.isNumber(args[2])) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[2]));
                     return;
                 }
@@ -47,10 +47,16 @@ public class GiveCommand implements IGeldCommand {
                 final double value = Double.parseDouble(args[2]);
                 final MoneyManager.Result result = this.plugin.getEconomy().increaseBalance(target.get(), value);
 
-                switch (result){
-                    case SUCCESS: sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGiveOthers", args[1], this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().getString("Currency.Name-Plural"))); break;
-                    case UNKNOWN_PLAYER: sender.sendMessage(this.plugin.getLang().getMessage("unknownNamedPlayer", args[1])); break;
-                    case INEXISTENT_PLAYER: sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1])); break;
+                switch (result) {
+                    case SUCCESS:
+                        sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGiveOthers", args[1], this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().getString("Currency.Name-Plural")));
+                        break;
+                    case UNKNOWN_PLAYER:
+                        sender.sendMessage(this.plugin.getLang().getMessage("unknownNamedPlayer", args[1]));
+                        break;
+                    case INEXISTENT_PLAYER:
+                        sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1]));
+                        break;
                 }
             });
 
@@ -63,21 +69,21 @@ public class GiveCommand implements IGeldCommand {
     @Override
     public void executePlayer(Player sender, String[] args) {
         // Player has no permission
-        if(!sender.hasPermission("money.give"))
+        if (!sender.hasPermission("money.give"))
             return;
 
-        if(args.length == 3){
+        if (args.length == 3) {
             this.plugin.getExecutor().execute(() -> {
                 final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
                 // Target does not exist
-                if(!target.isPresent()){
+                if (!target.isPresent()) {
                     sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1]));
                     return;
                 }
 
                 // Invalid number
-                if(!NumberUtils.isNumber(args[2])){
+                if (!NumberUtils.isNumber(args[2])) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[2]));
                     return;
                 }
@@ -85,13 +91,19 @@ public class GiveCommand implements IGeldCommand {
                 final double value = Double.parseDouble(args[2]);
                 final MoneyManager.Result result = this.plugin.getEconomy().increaseBalance(target.get(), value);
 
-                switch (result){
-                    case SUCCESS: sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGiveOthers", args[1], this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().getString("Currency.Name-Plural"))); break;
-                    case UNKNOWN_PLAYER: sender.sendMessage(this.plugin.getLang().getMessage("unknownNamedPlayer", args[1])); break;
-                    case INEXISTENT_PLAYER: sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1])); break;
+                switch (result) {
+                    case SUCCESS:
+                        sender.sendMessage(this.plugin.getLang().getPrefixedMessage("balanceGiveOthers", args[1], this.plugin.getLang().formatCurrency(value), this.plugin.getConfig().getString("Currency.Name-Plural")));
+                        break;
+                    case UNKNOWN_PLAYER:
+                        sender.sendMessage(this.plugin.getLang().getMessage("unknownNamedPlayer", args[1]));
+                        break;
+                    case INEXISTENT_PLAYER:
+                        sender.sendMessage(this.plugin.getLang().getMessage("inexistentNamedPlayer", args[1]));
+                        break;
                 }
             });
-        } else if(args.length == 2){
+        } else if (args.length == 2) {
             this.plugin.getExecutor().execute(() -> {
                 // Invalid number
                 if (!NumberUtils.isNumber(args[1])) {

@@ -14,20 +14,20 @@ public class BalanceCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public BalanceCommand(Geld plugin){
+    public BalanceCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(!sender.hasPermission("money.balance.others")){
+        if (!sender.hasPermission("money.balance.others")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
 
         this.plugin.getExecutor().execute(() -> {
-            if(args.length != 2){
+            if (args.length != 2) {
                 this.printHelp(sender);
                 return;
             }
@@ -35,7 +35,7 @@ public class BalanceCommand implements IGeldCommand {
             final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
             // Player does not exist
-            if(!target.isPresent()){
+            if (!target.isPresent()) {
                 sender.sendMessage(this.plugin.getLang().getPrefixedMessage("inexistentNamedPlayer", args[1]));
                 return;
             }
@@ -43,7 +43,7 @@ public class BalanceCommand implements IGeldCommand {
             final Optional<PlayerData> playerData = this.plugin.getEconomy().getPlayerData(target.get());
 
             // Player has not played before
-            if(!playerData.isPresent()){
+            if (!playerData.isPresent()) {
                 sender.sendMessage(this.plugin.getLang().getPrefixedMessage("unknownNamedPlayer", args[1]));
                 return;
             }
@@ -61,7 +61,7 @@ public class BalanceCommand implements IGeldCommand {
     @Override
     public void printHelp(CommandSender sender) {
         sender.sendMessage(
-            "§e/money balance §o[Spieler]"
+                "§e/money balance §o[Spieler]"
         );
     }
 }

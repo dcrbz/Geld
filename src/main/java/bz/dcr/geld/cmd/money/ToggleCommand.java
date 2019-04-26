@@ -10,7 +10,7 @@ public class ToggleCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public ToggleCommand(Geld plugin){
+    public ToggleCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -22,23 +22,23 @@ public class ToggleCommand implements IGeldCommand {
 
     @Override
     public void executePlayer(Player sender, String[] args) {
-        if(!sender.hasPermission("money.toggle")){
+        if (!sender.hasPermission("money.toggle")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
 
         // Wrong usage
-        if(args.length != 2){
+        if (args.length != 2) {
             this.printHelp(sender);
             return;
         }
 
-        if(args[1].equalsIgnoreCase("an")){
+        if (args[1].equalsIgnoreCase("an")) {
             this.plugin.getExecutor().execute(() -> {
                 this.plugin.getDB().setAcceptTransfers(sender.getUniqueId(), true);
                 sender.sendMessage(this.plugin.getLang().getPrefixedMessage("acceptTransfersOn"));
             });
-        } else if(args[1].equalsIgnoreCase("aus")){
+        } else if (args[1].equalsIgnoreCase("aus")) {
             this.plugin.getExecutor().execute(() -> {
                 this.plugin.getDB().setAcceptTransfers(sender.getUniqueId(), false);
                 sender.sendMessage(this.plugin.getLang().getPrefixedMessage("acceptTransfersOff"));

@@ -9,17 +9,17 @@ public class AlertManager {
     private Geld plugin;
 
     // Constructor
-    public AlertManager(Geld plugin){
+    public AlertManager(Geld plugin) {
         this.plugin = plugin;
     }
 
 
-    public void handleCriticalTransaction(Transaction transaction){
+    public void handleCriticalTransaction(Transaction transaction) {
         Bukkit.getOnlinePlayers()
                 .stream()
                 .filter(p -> p.hasPermission("money.alert"))
                 .parallel()
-                .forEach(p -> p.sendMessage( this.plugin.getLang().getPrefixedMessage("criticalTransaction", transaction.getSenderName(), this.plugin.getLang().formatCurrency(transaction.getValue()), transaction.getTargetName()) ));
+                .forEach(p -> p.sendMessage(this.plugin.getLang().getPrefixedMessage("criticalTransaction", transaction.getSenderName(), this.plugin.getLang().formatCurrency(transaction.getValue()), transaction.getTargetName())));
     }
 
 }

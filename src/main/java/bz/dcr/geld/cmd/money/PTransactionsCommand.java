@@ -17,7 +17,7 @@ public class PTransactionsCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public PTransactionsCommand(Geld plugin){
+    public PTransactionsCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
@@ -30,18 +30,18 @@ public class PTransactionsCommand implements IGeldCommand {
     @Override
     public void executePlayer(Player sender, String[] args) {
         // Player has no permission
-        if(!sender.hasPermission("money.ptransactions")) {
+        if (!sender.hasPermission("money.ptransactions")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
 
         this.plugin.getExecutor().execute(() -> {
-            if(args.length == 2 || args.length == 3){
+            if (args.length == 2 || args.length == 3) {
                 int pageNum = 1;
 
                 // Invalid page
-                if(args.length == 3){
-                    if(!Utils.isInteger(args[2]) || (pageNum = Integer.parseInt(args[2])) < 1){
+                if (args.length == 3) {
+                    if (!Utils.isInteger(args[2]) || (pageNum = Integer.parseInt(args[2])) < 1) {
                         sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[2]));
                         return;
                     }
@@ -50,8 +50,8 @@ public class PTransactionsCommand implements IGeldCommand {
                 final Optional<UUID> target = plugin.getIdentificationProvider().getUUID(args[1]);
 
                 // Target is not existing
-                if(!target.isPresent()){
-                    sender.sendMessage( this.plugin.getLang().getPrefixedMessage("unknownNamedPlayer", args[1]) );
+                if (!target.isPresent()) {
+                    sender.sendMessage(this.plugin.getLang().getPrefixedMessage("unknownNamedPlayer", args[1]));
                     return;
                 }
 
@@ -61,7 +61,7 @@ public class PTransactionsCommand implements IGeldCommand {
                 transactions.forEach(t -> pages.addItem(t));
 
                 // Page does not exist
-                if(pages.getPages().size() < pageNum){
+                if (pages.getPages().size() < pageNum) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidPage", args[2]));
                     return;
                 }
@@ -69,15 +69,15 @@ public class PTransactionsCommand implements IGeldCommand {
                 final Optional<List<Transaction>> currentPage = pages.getPage(pageNum - 1);
 
                 // Page does not exist
-                if(!currentPage.isPresent()){
+                if (!currentPage.isPresent()) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidPage", args[2]));
                     return;
                 }
 
                 // Show transactions
                 sender.sendMessage(this.plugin.getLang().getMessage("transactionsHeader"));
-                for(Transaction t : currentPage.get()){
-                    sender.sendMessage( "§e§l" + this.plugin.getLang().formatTimestamp(t.getTime()) + ": §f" + t.getSenderName() + " §7> " + this.plugin.getLang().formatCurrency(t.getValue()) + " §7> §f" + t.getTargetName());
+                for (Transaction t : currentPage.get()) {
+                    sender.sendMessage("§e§l" + this.plugin.getLang().formatTimestamp(t.getTime()) + ": §f" + t.getSenderName() + " §7> " + this.plugin.getLang().formatCurrency(t.getValue()) + " §7> §f" + t.getTargetName());
                 }
                 sender.sendMessage(this.plugin.getLang().getMessage("transactionsFooter", pageNum, pages.getPages().size()));
             } else {

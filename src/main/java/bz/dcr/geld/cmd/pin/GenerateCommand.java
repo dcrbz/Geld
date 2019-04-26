@@ -17,26 +17,26 @@ public class GenerateCommand implements IGeldCommand {
     private Geld plugin;
 
     // Constructor
-    public GenerateCommand(Geld plugin){
+    public GenerateCommand(Geld plugin) {
         this.plugin = plugin;
     }
 
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(args.length == 2){
+        if (args.length == 2) {
             double value;
 
-            if(!NumberUtils.isNumber(args[1])){
+            if (!NumberUtils.isNumber(args[1])) {
                 sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                 return;
-            } else if((value = Double.parseDouble(args[1])) < 0 || value < this.plugin.getConfig().getDouble("Pins.Min-Value")) {
+            } else if ((value = Double.parseDouble(args[1])) < 0 || value < this.plugin.getConfig().getDouble("Pins.Min-Value")) {
                 sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                 return;
             }
 
             RedeemablePin pin = new RedeemablePin(value, value, this.plugin.getConfig().getLong("Pins.Expire-Days"));
-            while(this.plugin.getDB().validatePin(pin.getPinCode()) != PinValidationResult.NOT_EXISTING){
+            while (this.plugin.getDB().validatePin(pin.getPinCode()) != PinValidationResult.NOT_EXISTING) {
                 pin = new RedeemablePin(value, value, this.plugin.getConfig().getLong("Pins.Expire-Days"));
             }
 
@@ -50,34 +50,34 @@ public class GenerateCommand implements IGeldCommand {
     @Override
     public void executePlayer(Player sender, String[] args) {
         // No permission
-        if(!sender.hasPermission("pin.generate")){
+        if (!sender.hasPermission("pin.generate")) {
             sender.sendMessage(this.plugin.getLang().getMessage("noPermission"));
             return;
         }
 
         this.plugin.getExecutor().execute(() -> {
-            if(args.length == 2){
+            if (args.length == 2) {
                 double value;
 
-                if(!NumberUtils.isNumber(args[1])){
+                if (!NumberUtils.isNumber(args[1])) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
-                } else if((value = Double.parseDouble(args[1])) < 0 || value < this.plugin.getConfig().getDouble("Pins.Min-Value")) {
+                } else if ((value = Double.parseDouble(args[1])) < 0 || value < this.plugin.getConfig().getDouble("Pins.Min-Value")) {
                     sender.sendMessage(this.plugin.getLang().getMessage("invalidNumber", args[1]));
                     return;
                 }
 
                 RedeemablePin pin = new RedeemablePin(value, value, this.plugin.getConfig().getLong("Pins.Expire-Days"));
-                while(this.plugin.getDB().validatePin(pin.getPinCode()) != PinValidationResult.NOT_EXISTING){
+                while (this.plugin.getDB().validatePin(pin.getPinCode()) != PinValidationResult.NOT_EXISTING) {
                     pin = new RedeemablePin(value, value, this.plugin.getConfig().getLong("Pins.Expire-Days"));
                 }
 
                 this.plugin.getDB().addRedeemablePin(pin);
 
                 final String separatedPin = pin.toSeparatedString();
-                final TextComponent text = new TextComponent( this.plugin.getLang().getMessage("pinGenerated", separatedPin, value, this.plugin.getConfig().get("Currency.Name-Plural")) );
-                text.setHoverEvent(new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.getLang().getMessage("pinGeneratedHover")).create() ));
-                text.setClickEvent(new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, separatedPin ));
+                final TextComponent text = new TextComponent(this.plugin.getLang().getMessage("pinGenerated", separatedPin, value, this.plugin.getConfig().get("Currency.Name-Plural")));
+                text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.getLang().getMessage("pinGeneratedHover")).create()));
+                text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, separatedPin));
                 sender.spigot().sendMessage(text);
             } else {
                 this.printHelp(sender);

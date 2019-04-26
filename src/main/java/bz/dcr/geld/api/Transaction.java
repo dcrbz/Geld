@@ -15,9 +15,10 @@ public class Transaction {
     private Date time;
 
     // Constructor
-    public Transaction(){}
+    public Transaction() {
+    }
 
-    public Transaction(UUID sender, UUID target){
+    public Transaction(UUID sender, UUID target) {
         this.sender = sender;
         this.target = target;
         this.value = 0.0D;
@@ -26,51 +27,51 @@ public class Transaction {
     }
 
 
-    public UUID getSender(){
+    public UUID getSender() {
         return this.sender;
     }
 
-    public String getSenderName(){
+    public String getSenderName() {
         return this.senderName;
     }
 
-    public void setSenderName(String senderName){
+    public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
 
-    public UUID getTarget(){
+    public UUID getTarget() {
         return this.target;
     }
 
-    public String getTargetName(){
+    public String getTargetName() {
         return this.targetName;
     }
 
-    public void setTargetName(String targetName){
+    public void setTargetName(String targetName) {
         this.targetName = targetName;
     }
 
-    public double getValue(){
+    public double getValue() {
         return this.value;
     }
 
-    public void setValue(double amount){
+    public void setValue(double amount) {
         this.value = amount;
     }
 
-    public double getTax(){
+    public double getTax() {
         return tax;
     }
 
-    public void setTax(double tax){
+    public void setTax(double tax) {
         this.tax = tax;
     }
 
-    public Date getTime(){
+    public Date getTime() {
         return this.time;
     }
 
-    public void setTime(Timestamp timestamp){
+    public void setTime(Timestamp timestamp) {
         this.time = timestamp;
     }
 

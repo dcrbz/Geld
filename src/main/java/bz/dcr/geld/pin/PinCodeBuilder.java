@@ -10,37 +10,37 @@ public class PinCodeBuilder {
     private String pin;
 
     // Constructors
-    public PinCodeBuilder(){
+    public PinCodeBuilder() {
         this.groups = 6;
         this.digits = 4;
         this.pin = generate();
     }
 
 
-    public PinCodeBuilder groups(int groups){
+    public PinCodeBuilder groups(int groups) {
         this.groups = groups;
         return this;
     }
 
-    private PinCodeBuilder digits(int digits){
+    private PinCodeBuilder digits(int digits) {
         this.digits = digits;
         return this;
     }
 
-    public final String build(){
+    public final String build() {
         this.pin = generate();
         return this.pin;
     }
 
 
     // Generate pin
-    private String generate(){
+    private String generate() {
         Random random;
         String pinCode = "";
 
-        for(int i = 0; i < this.groups * this.digits; i++){
+        for (int i = 0; i < this.groups * this.digits; i++) {
             random = new Random();
-            pinCode += CHARS.charAt( random.nextInt(CHARS.length()) );
+            pinCode += CHARS.charAt(random.nextInt(CHARS.length()));
         }
 
         return pinCode;
@@ -48,7 +48,7 @@ public class PinCodeBuilder {
 
 
     // Get builder
-    public static PinCodeBuilder builder(){
+    public static PinCodeBuilder builder() {
         return new PinCodeBuilder();
     }
 

@@ -20,7 +20,7 @@ public class LangManager {
     private final DateFormat timeFormat = new SimpleDateFormat("dd.MM.yyyy | HH:mm");
 
     // Constructor
-    public LangManager(File langFile){
+    public LangManager(File langFile) {
         this.currencySymbols.setDecimalSeparator(',');
         this.currencySymbols.setGroupingSeparator('.');
         this.currencyFormat = new DecimalFormat("#,##0.00", this.currencySymbols);
@@ -75,22 +75,22 @@ public class LangManager {
     }
 
 
-    public String getMessage(String key, Object... replacements){
+    public String getMessage(String key, Object... replacements) {
         return MessageFormat.format(ChatColor.translateAlternateColorCodes('&', this.lang.getString(key)), replacements).replace("\\n", "\n");
     }
 
-    public String getPrefixedMessage(String key, Object... replacements){
+    public String getPrefixedMessage(String key, Object... replacements) {
         return ChatColor.translateAlternateColorCodes('&', this.lang.getString("prefix")) + this.getMessage(key, replacements);
     }
 
 
     /* UTILS */
 
-    public String formatCurrency(double currency){
+    public String formatCurrency(double currency) {
         return this.currencyFormat.format(currency);
     }
 
-    public String formatTimestamp(Date date){
+    public String formatTimestamp(Date date) {
         return this.timeFormat.format(date);
     }
 }

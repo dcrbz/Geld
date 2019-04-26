@@ -13,9 +13,10 @@ public class RedeemablePin {
     private Date expiresAt;
 
     // Constructors
-    public RedeemablePin(){}
+    public RedeemablePin() {
+    }
 
-    public RedeemablePin(double initialValue, double value, long expireDays){
+    public RedeemablePin(double initialValue, double value, long expireDays) {
         this.pinCode = PinCodeBuilder.builder().groups(6).build();
         this.initialValue = initialValue;
         this.value = value;
@@ -23,15 +24,15 @@ public class RedeemablePin {
     }
 
 
-    public String getPinCode(){
+    public String getPinCode() {
         return this.pinCode;
     }
 
-    public double getValue(){
+    public double getValue() {
         return this.value;
     }
 
-    public double getInitialValue(){
+    public double getInitialValue() {
         return this.initialValue;
     }
 
@@ -43,7 +44,7 @@ public class RedeemablePin {
 
     /* Setters */
 
-    public void setValue(double value){
+    public void setValue(double value) {
         this.value = value;
     }
 
