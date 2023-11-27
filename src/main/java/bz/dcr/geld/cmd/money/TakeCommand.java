@@ -3,7 +3,7 @@ package bz.dcr.geld.cmd.money;
 import bz.dcr.geld.Geld;
 import bz.dcr.geld.cmd.IGeldCommand;
 import bz.dcr.geld.data.MoneyManager;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

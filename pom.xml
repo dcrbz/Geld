@@ -6,18 +6,21 @@
 
     <groupId>bz.dcr.geld</groupId>
     <artifactId>Geld</artifactId>
-    <version>3.6.0</version>
+    <version>3.7.0</version>
 
     <properties>
-        <javaVersion>1.8</javaVersion>
-        <spigotVersion>1.13.2-R0.1-SNAPSHOT</spigotVersion>
+        <javaVersion>21</javaVersion>
+        <spigotVersion>1.20-R0.1-SNAPSHOT</spigotVersion>
     </properties>
 
     <repositories>
-        <!-- deinCraft Repository -->
         <repository>
-            <id>deincraft-repo</id>
-            <url>https://maven.dtl.bz/artifactory/public</url>
+            <id>deincraft</id>
+            <url>https://maven.deincraft.dev/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -34,15 +37,14 @@
         <dependency>
             <groupId>bz.dcr</groupId>
             <artifactId>dccore-spigot</artifactId>
-            <version>1.2.0</version>
-            <scope>provided</scope>
+            <version>1.4.0</version>
         </dependency>
 
         <!-- Vault API -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -62,7 +64,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>${javaVersion}</source>
                     <target>${javaVersion}</target>
