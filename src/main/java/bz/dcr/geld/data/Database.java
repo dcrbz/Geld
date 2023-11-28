@@ -26,7 +26,7 @@ public abstract class Database {
 
     public abstract List<Transaction> getTransactions(UUID uuid);
 
-    public abstract void setAllPlayerData(Collection<PlayerData> data);
+    public abstract void setAllPlayerData(List<PlayerData> data);
 
     public abstract void setAcceptTransfers(UUID player, boolean status);
 

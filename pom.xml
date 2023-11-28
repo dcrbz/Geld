@@ -37,7 +37,7 @@
         <dependency>
             <groupId>bz.dcr</groupId>
             <artifactId>dccore-spigot</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
 
         <!-- Vault API -->

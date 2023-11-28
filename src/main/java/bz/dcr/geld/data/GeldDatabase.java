@@ -5,18 +5,19 @@ import bz.dcr.geld.api.Transaction;
 import bz.dcr.geld.pin.RedeemablePin;
 import bz.dcr.geld.pin.results.PinValidationResult;
 import com.mongodb.MongoClientURI;
-import org.mongodb.morphia.query.FindOptions;
-import org.mongodb.morphia.query.Query;
+import dev.morphia.query.FindOptions;
+import dev.morphia.query.filters.Filters;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static dev.morphia.query.Sort.descending;
+
 public class GeldDatabase extends Database {
 
-    private ClassLoader classLoader;
-    private MongoClientURI uri;
+    private final ClassLoader classLoader;
+    private final MongoClientURI uri;
 
     private MongoDB mongoDB;
 
@@ -48,9 +49,9 @@ public class GeldDatabase extends Database {
     @Override
     public Optional<PlayerData> getPlayerData(UUID uuid) {
         final PlayerData playerData = mongoDB.getDatastore()
-                .createQuery(PlayerData.class)
-                .field("uniqueId").equal(uuid)
-                .get();
+                .find(PlayerData.class)
+                .filter(Filters.eq("uniqueId", uuid))
+                .first();
 
         return Optional.ofNullable(playerData);
     }
@@ -67,19 +68,18 @@ public class GeldDatabase extends Database {
 
     @Override
     public List<Transaction> getTransactions(UUID uuid) {
-        final Query<Transaction> query = mongoDB.getDatastore()
-                .createQuery(Transaction.class);
-
-        query.or(
-                query.criteria("sender").equal(uuid),
-                query.criteria("target").equal(uuid)
-        );
-
-        return query.asList();
+        return mongoDB.getDatastore()
+                .find(Transaction.class)
+                .filter(Filters.or(
+                        Filters.eq("sender", uuid),
+                        Filters.eq("target", uuid)
+                ))
+                .stream()
+                .toList();
     }
 
     @Override
-    public void setAllPlayerData(Collection<PlayerData> data) {
+    public void setAllPlayerData(List<PlayerData> data) {
         mongoDB.getDatastore().save(data);
     }
 
@@ -88,7 +88,7 @@ public class GeldDatabase extends Database {
         final Optional<PlayerData> playerData = getPlayerData(player);
 
         // No PlayerData found
-        if (!playerData.isPresent()) {
+        if (playerData.isEmpty()) {
             return;
         }
 
@@ -104,24 +104,28 @@ public class GeldDatabase extends Database {
         final Optional<PlayerData> playerData = getPlayerData(player);
 
         // No PlayerData found
-        if (!playerData.isPresent()) {
-            return false;
-        }
+        return playerData.map(PlayerData::doesAcceptTransfers).orElse(false);
 
-        return playerData.get().doesAcceptTransfers();
     }
 
     @Override
     public boolean hasPlayer(UUID uuid) {
-        return mongoDB.getDatastore().getCount(PlayerData.class) > 0;
+        return mongoDB.getDatastore()
+                .find(PlayerData.class)
+                .filter(Filters.eq("uniqueId", uuid))
+                .count() > 0;
     }
 
     @Override
     public List<PlayerData> getTop(int amount) {
-        return mongoDB.getDatastore()
-                .createQuery(PlayerData.class)
-                .order("-balance")
-                .asList(new FindOptions().limit(amount));
+        var iterator = mongoDB.getDatastore()
+                .find(PlayerData.class)
+                .iterator(new FindOptions()
+                        .sort(descending("balance"))
+                        .limit(amount));
+        try (iterator) {
+            return iterator.toList();
+        }
     }
 
     @Override
@@ -132,10 +136,9 @@ public class GeldDatabase extends Database {
     @Override
     public Optional<RedeemablePin> getRedeemablePin(String pinCode) {
         final RedeemablePin pin = mongoDB.getDatastore()
-                .createQuery(RedeemablePin.class)
-                .field("pinCode").equal(pinCode.replace("-", ""))
-                .get();
-
+                .find(RedeemablePin.class)
+                .filter(Filters.eq("pinCode", pinCode.replace("-", "")))
+                .first();
         return Optional.ofNullable(pin);
     }
 
