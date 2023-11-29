@@ -38,6 +38,7 @@
             <groupId>bz.dcr</groupId>
             <artifactId>dccore-spigot</artifactId>
             <version>1.4.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Vault API -->
